@@ -28,3 +28,17 @@
 - Install and configure  Apache to serve a Python mod_wsgi application
 - Install and configure PostgreSQL
 - Install Git and clone  project 3 restaurant menu app so that it functions correctly when you visit server's Ip address in the browser
+
+## 1.**Setup Environment**
+## 2.**Create a New User with sudo permissions**
+## 3.**Update and upgraded all current packages**
+## 4.**Configure SSH access change ssh port 22 to port 2200**
+## 5.**Configure UFW only allowing connections for SSH (Port: 2200), HTTP(Port: 80) and NTP (Port: 123)**
+## 6.**Configure Local time zone to UTC**
+## 7.**Install and Configure Apache to serve a Python mod_wsgi application**
+## 8.**Install Git and Setup Environment for deloplying Flask Application**
+## 9.**Install and configure PostgreSQL**
+## 10.**Create a new user: catalog, add user to PostgreSQL databse with limited permissions to catalog application database.**
+## 11.**Get OAUTH-LOGINS (Google+ and Facebook) working**
+## 12. **Run your app on amazonaws.**
+
