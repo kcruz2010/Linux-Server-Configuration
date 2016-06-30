@@ -1,4 +1,4 @@
-**This a project base on :**
+## **This a project base on :**
 
 - the securing and configuring the Linux server
 - Deploy project 3 restaurant menu app using Apache web server, Flask python Frame work, and PostgreSQL
@@ -16,6 +16,13 @@
 - git 
 - postgresql
 - flask
+- python-setuptools
+- sqlalchemy
+- python-psycopg2
+- oauth2
+- google-api-python client
+- failban2
+- glances
 
 ## **Configuration Overview**
 
