@@ -189,7 +189,20 @@ Reference: [https://classroom.udacity.com/nanodegrees/nd004/parts/00413454014/mo
 
 `grader@ip-10-20-3-215:~$ sudo apache2ctl restart`
 
-## ** Setup Environemt to Deploy Flask Application**
+## **Setup Environment to Deploy Flask Application**
+Reference: [https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps]
+
+- Add additional Python Packages to enable Apache serve Flask Applications
+
+`grader@ip-10-20-3-215:~$  sudo apt-get install libapache-mod-wsgi python-dev`
+
+- Enable mod_wsgi
+
+`grader@ip-10-20-3-215:~$  sudo a2enmod wsgi`
+
+- Set up a directory folder for our app call it `Catalog`
+
+`
 ## **Install and configure PostgreSQL**
 ## **Create a new user: catalog, add user to PostgreSQL databse with limited permissions to catalog application database.**
 ## **Get OAUTH-LOGINS (Google+ and Facebook) working**
