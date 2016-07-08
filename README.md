@@ -8,7 +8,7 @@ Reference:
 ## **Server info:**
 - Server IP address: 56.36.114.47
 - SSH port : 2200
-- URL  to Restaurant Menu App:
+- URL  to Restaurant Menu App: ec2-52-36-114-47.us-west-2.compute.amazonaws.com
 
 ## **Packages installed**
 
@@ -202,9 +202,13 @@ Reference: [https://www.digitalocean.com/community/tutorials/how-to-deploy-a-fla
 
 - Set up a directory folder for our app call it `Catalog`
 
-`
+`grader@ip-10-20-3-215: cd /var/www`
+
+`grader@ip-10-20-3-215: cd /var/www$ sudo mkdir Catalog`
+
 ## **Install and configure PostgreSQL**
 ## **Create a new user: catalog, add user to PostgreSQL databse with limited permissions to catalog application database.**
 ## **Get OAUTH-LOGINS (Google+ and Facebook) working**
 ## **Run your app on amazonaws.**
+- ec2-52-36-114-47.us-west-2.compute.amazonaws.com
 
