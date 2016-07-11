@@ -209,6 +209,73 @@ Reference: [https://www.digitalocean.com/community/tutorials/how-to-deploy-a-fla
 ## **Install and configure PostgreSQL**
 ## **Create a new user: catalog, add user to PostgreSQL databse with limited permissions to catalog application database.**
 ## **Get OAUTH-LOGINS (Google+ and Facebook) working**
+- Update Google+  and Facebook client_secrets in json by `adding r'/var/www/Catalog/catalog`  and `/var/www/catalog/catalog`
+
+`CLIENT_ID = json.loads(
+    open(r'/var/www/Catalog/catalog/client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "Restaurant Menu Application"`
+
+ `oauth_flow = flow_from_clientsecrets('/var/www/Catalog/catalog/client_secrets.json', scope ='')`
+
+ `app_id = json.loads(open('/var/www/Catalog/catalog/fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+    app_secret = json.loads(
+        open('/var/www/Catalog/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']`
+
+- Go to  http://www.hcidata.info/host2ip.cgi to get a host name for your public ip Address 52.36.114.47 to 52-36-114-47.us-west-2.compute.amazonaws.com
+
+- Edit `Catalog.conf` by adding ServerAlias 52-36-114-47.us-west-2.compute.amazonaws.com
+
+`<VirtualHost *:80>
+
+    ServerName 52.36.114.47
+    
+    ServerAdmin grader@52.36.114.47
+    
+    ServerAlias ec2-52-36-114-47.us-west-2.compute.amazonaws.com
+    
+    WSGIScriptAlias / /var/www/Catalog/catalog.wsgi
+    
+    <Directory /var/www/Catalog/catalog/>
+    
+        Order allow,deny
+        
+        Allow from all
+        
+    </Directory>
+    
+    Alias /static /var/www/Catalog/catalog/static
+    
+    <Directory /var/www/Catalog/catalog/static/>
+    
+        Order allow,deny
+        
+        Allow from all
+        
+    </Directory>
+    
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    
+    LogLevel warn
+    
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    
+</VirtualHost>`
+
+- Update Oauth authorized JavaScript origins  by going to http://console.developers.google.com/
+
+- Under Credentials edit your 0Auth 2.0 client IDs and add 
+
+`http://52.36.114.47/`
+
+`http://ec2-52-36-114-47.us-west-2.compute.amazonaws.com`
+
+- Update Facebook authorization by adding 
+
+`http://52.36.114.47/` on the site URL
+
+
+
 ## **Run your app on amazonaws.**
 - ec2-52-36-114-47.us-west-2.compute.amazonaws.com
 
