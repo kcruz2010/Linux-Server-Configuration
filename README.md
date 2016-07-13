@@ -207,7 +207,154 @@ Reference: [https://www.digitalocean.com/community/tutorials/how-to-deploy-a-fla
 `grader@ip-10-20-3-215: cd /var/www$ sudo mkdir Catalog`
 
 ## **Install and configure PostgreSQL**
+Reference: [https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps]
+- Install the PostgreSQL database:
+
+`(venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ sudo apt-get install postgresql postgresql-contrib`
+
+- No remote connections are allowed. It should be default
+
+`(venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ sudo nano /etc/postgresql/9.3/main/pg_hba.conf`
+
+- Open your project 3 `database_setup.py` file:
+
+`(venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ sudo nano database_setup.py`
+
+- Change syntax:
+
+ `engine = create_engine('sqlite:///YOUR-DATABASE-NAME.db')` to 
+ 
+ `engine = create_engine('postgresql://catalog:DB-PASSWORD@localhost/catalog')`
+ 
+- Note: change  password from DB-PASSWORD to grader
+
+- Rename your `app.py` to `__init__.py`
+
+`(venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ mv YOUR_APP.py __init__.py`
+    `
+    
+    *Note*:  If you make that change above, make sure your 'catalog.wsgi` file reflects this change. It should read like so:
+    
+    ```python
+    #!/user/bin/python
+    import sys
+    import logging
+    logging.basicConfig(stream=sys.stderr)
+    sys.path.insert(0,"/var/www/Catalog/catalog/")
+
+    from __init__ import app as application
+    application.secret_key = 'Add your secret key'
+    ```
+    
+    If you did not make the above changes, then `catalog.wsgi` should have whatever application_name.py in your project 3 file that contains your `app = Flask(__name__)` so that it can be imported as application in the `catalog.wsgi` file.
+
+
 ## **Create a new user: catalog, add user to PostgreSQL databse with limited permissions to catalog application database.**
+- Create a user `catalog` for psql:
+
+    ```
+    (venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ sudo adduser catalog
+    
+    choose a password for that user.
+    ```
+    
+- Change to the default user `Postgres`
+
+    ```
+    (venv) grader@ip-10-20-30-101:/var/www/Catalog/catalog$ sudo su - postgres
+    postgres@ip-10-20-25-175:~$ 
+    ```
+    
+    Connect to the postgres system:
+    
+    ```
+    postgres@ip-10-20-30-101:~$ psql
+    ```
+    
+    You see this:
+    
+    ```
+    psql (9.3.12)
+    Type "help" for help.
+
+    postgres=# 
+    ```
+    
+- Add the postgres user: `catalog` with a `login role` and `password`
+    
+    ```
+    postgres=# CREATE USER catalog WITH PASSWORD 'DB-PASSWORD';
+    ```
+    *Note* : The *DB-PASSWORD*, should be the same password you used to create the postgresql engine in your database_setup.py file.(grader)
+    
+ - Allow the user `catalog` to be able to create databse tables
+    
+    ```
+    postgres=# ALTER USER catalog CREATEDB;
+    ```
+- You can list the roles available in postgres, and their attribute:
+    
+    ```
+    postgres=# \du
+    ```
+    
+- Create a new database called `catalog` for the user: `catalog`:
+
+    ```
+    postgres=# CREATE DATABASE catalog WITH OWNER catalog;
+    ```
+    
+-  Connect to the database:
+
+    ```
+    postgres=# \c catalog
+    ```
+    
+- Revoke all rights on the database schema, and grant access to catalog only.
+
+    ```
+    catalog=# REVOKE ALL ON SCHEMA public FROM public;
+    catalog=# GRANT ALL ON SCHEMA public TO catalog;
+    ```
+    
+    Exit Postgresql and postgres user:
+    
+    ```
+    postgres=# \q
+    postgres@ip-10-20-3-215~$ exit
+    ```
+    
+- Create Postgresql database schema:
+
+    ```
+    (venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ python database_setup.py
+    ```
+    
+    We can check that it worked. After you run `database_setup.py`, Go back to your postgres schema, and connect to `catalog` database.
+    
+    ```
+    postgres@ip-10-20-3-215:~$ psql
+    psql (9.3.12)
+    Type "help" for help.
+
+    postgres=# \c catalog
+    ```
+    
+    When you conect to the `catalog` database, you can view all the relations created by your `python database_setup.py` command.
+    
+    ` catalog=# \dt`
+ 
+    
+    Now exit postgres, and return to Virtual environment.
+    
+-  Restart Apache:
+
+    ```
+    (venv) grader@ip-10-20-3-215:/var/www/Catalog/catalog$ sudo service apache2 restart
+    ```
+    
+    Open  browser, put in PUBLIC-IP-ADDRESS : `52.36.114.47`.  Start Restaurant App
+
 ## **Get OAUTH-LOGINS (Google+ and Facebook) working**
 - Update Google+  and Facebook client_secrets in json by `adding r'/var/www/Catalog/catalog`  and `/var/www/catalog/catalog`
 
@@ -279,3 +426,4 @@ APPLICATION_NAME = "Restaurant Menu Application"`
 ## **Run your app on amazonaws.**
 - ec2-52-36-114-47.us-west-2.compute.amazonaws.com
 
+Third party resource: [elnobun] (https://github.com/elnobun/Linux-Server-Configuration/blob/master/README.md)
