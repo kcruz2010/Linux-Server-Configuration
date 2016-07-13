@@ -6,7 +6,7 @@ Reference:
 - Deploy project 3 restaurant menu app using Apache web server, Flask python Frame work, and PostgreSQL
 
 ## **Server info:**
-- Server IP address: 56.36.114.47
+- Server IP address: 52.36.114.47
 - SSH port : 2200
 - URL  to Restaurant Menu App: ec2-52-36-114-47.us-west-2.compute.amazonaws.com
 
